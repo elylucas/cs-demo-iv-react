@@ -4,19 +4,20 @@ import { TeaCategory } from '../models';
 
 type TeaCategoryItemProps = {
   category: TeaCategory;
-  onCategoryClick: (id: number) => void;
+  // onCategoryClick: (id: number) => void;
 };
 
-const TeaCategoryItem: React.FC<TeaCategoryItemProps> = ({category, onCategoryClick }) => {
+const TeaCategoryItem: React.FC<TeaCategoryItemProps> = ({category }) => {
   const labelStyle = {
     whiteSpace: 'normal'
   };
 
-  const handleClick = () => onCategoryClick(category.id);
+  // Prefer using the routerLink prop on IonItem vs programmatically using the history api
+  // const handleClick = () => onCategoryClick(category.id);
 
   return (
-    <IonItem>
-      <IonLabel style={labelStyle} onClick={handleClick}>
+    <IonItem routerLink={`/tabs/home/edit-tea-category/${category.id}`}>
+      <IonLabel style={labelStyle}>
         <div className="title">{category.name}</div>
         <div>{category.description}</div>
       </IonLabel>

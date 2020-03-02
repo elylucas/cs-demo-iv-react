@@ -14,6 +14,8 @@ interface AuthState {
   error?: Error;
 }
 
+// There are some patterns to get strongly typed actions that are cool but add a bit of boilerplate
+
 const auth = (
   state: AuthState = { loading: false, hasSession: false, status: AuthStatus.Uninitialized },
   action: any

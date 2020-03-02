@@ -35,6 +35,7 @@ import AskForPin from './containers/AskForPin';
 const { StatusBar, SplashScreen } = Plugins;
 
 const App: React.FC = () => {
+  // this can probably be removed
   if (isPlatform('cordova')) {
     SplashScreen.hide();
     StatusBar.setStyle({ style: StatusBarStyle.Light });

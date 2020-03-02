@@ -14,20 +14,23 @@ import { RouteComponentProps, useHistory } from 'react-router';
 
 import UpdateTeaCategory from '../containers/UpdateTeaCategory';
 import { TeaCategory } from '../models';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import { update } from '../store/tea-category-actions';
 
-interface EditTeaCategoryProps
-  extends RouteComponentProps<{
-    id: string;
-  }> {}
+interface EditTeaCategoryProps {
+  id: string;
+}
 
-const EditTeaCategory: React.FC<EditTeaCategoryProps> = ({ match }) => {
+// An alternative to directly using the route props is to pass the tea category id in as a prop 
+// and fetch it from match in the connect HOC (demonstrated below)
+
+const EditTeaCategory: React.FC<EditTeaCategoryProps> = ({ id }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [category, setCategory] = useState<TeaCategory>();
 
-  const categoryId = parseInt(match.params.id);
+  // const categoryId = parseInt(match.params.id);
+  const categoryId = parseInt(id);
 
   const handleCategoryChange = (category: TeaCategory) => {
     setCategory({ ...category });
@@ -64,4 +67,11 @@ const EditTeaCategory: React.FC<EditTeaCategoryProps> = ({ match }) => {
   );
 };
 
-export default EditTeaCategory;
+const mapStateToProps = (state: any, ownProps: RouteComponentProps<{ id: string;}>) => {
+  const id = ownProps.match.params.id;
+  return {
+    id
+  }
+};
+
+export default connect(mapStateToProps, {})(EditTeaCategory);

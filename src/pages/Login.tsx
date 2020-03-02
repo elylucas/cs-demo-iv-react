@@ -11,32 +11,54 @@ import {
   IonInput,
   IonButton
 } from '@ionic/react';
-import { useStore } from 'react-redux';
+import { useStore, connect } from 'react-redux';
 import UnlockApplication from '../containers/UnlockApplication';
 import { login } from '../store/auth-actions.async';
 import { getAuthError } from '../store';
 
-const Login: React.FC = () => {
+interface LoginProps {
+  errorMessage?: string;
+  login: (params: { email: string, password: string; }) => void;
+}
+
+// so this just might be me, but I like to keep the store out of my components, but unfortunately the useStore hook made it a lot easier
+// to do use it. 
+// To demonstrate, I changed just this login method to use the connect HOC which will pass in the login method as a prop, and the way you 
+// had the actions written will make sure the dispatch gets passed into the method when it goes through the connect middleware.
+// I also updated the errorMessage to pass it in as a prop instead of subscribing to store changes
+
+// An aside, the login api on heroku seems to hang when passing in an email value that isn't a valid email format
+
+const Login: React.FC<LoginProps> = ({ errorMessage, login }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+  // commented this out since the errorMessage is coming in as a prop
+  // const [errorMessage, setErrorMessage] = useState();
   const store = useStore();
 
   const loginButtonStyle: CSSProperties = {
     marginTop: '3em'
   };
 
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      const error = getAuthError(store.getState());
-      setErrorMessage(error ? error.message : '');
-    });
+  // useEffect should always have a dependency array passed into it
+  // right now this will run each time the component renders, which might not be ideal.  
+  // useEffect(() => {
+  //   commented this out since the errorMessage is coming in as a prop
+  //   const unsubscribe = store.subscribe(() => {
+  //     const error = getAuthError(store.getState());
+  //     setErrorMessage(error ? error.message : '');
+  //   });
 
-    return unsubscribe;
-  });
+  //   return unsubscribe;
+  // });
 
   const handleSignIn = () => {
-    store.dispatch<any>(login({ email, password }));
+    // so this just might be me, but I like to keep the store out of my components, but unfortunately the useStore hook made it a lot easier
+    // to do use it. 
+    // To demonstrate, I changed just this login method to use the connect HOC which will pass in the login method as a prop, and the way you 
+    // had the actions written will make sure the dispatch gets passed into the method when it goes through the connect middleware.
+    login({ email, password });
+    // store.dispatch<any>(login({ email, password }));
   };
   const handleEmailChange = (evt: CustomEvent) => setEmail(evt.detail.value);
   const handlePasswordChange = (evt: CustomEvent) => setPassword(evt.detail.value);
@@ -70,4 +92,13 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state: any, ownProps: any) => {
+  const error = getAuthError(state);
+  return {
+    errorMessage: error?.message
+  };
+};
+
+export default connect(mapStateToProps, {
+  login
+})(Login); 

@@ -43,7 +43,7 @@ The about page displays some based information about the application as well as 
 
 ### Settings
 
-This page allows the user to specify exactly how the vault shoud be set up. There are three options:
+This page allows the user to specify exactly how the vault should be set up. There are three options:
 
 - Biometrics
 - Passcode (choosing this will ask for a passcode to use)
@@ -63,7 +63,7 @@ The page components are the main components that are routed to. Outside of some 
 
 #### Standard Components
 
-The standard components are generally in charge of displaying data to the user and allowing the user to interact with the data on the pages. There is one notable exception. The `AuthMonitor` component, as the name implies, monitors the `auth` state and redicts the user either to the login page or the application's main page when that state changes in a significant manner.j
+The standard components are generally in charge of displaying data to the user and allowing the user to interact with the data on the pages. There is one notable exception. The `AuthMonitor` component, as the name implies, monitors the `auth` state and redicts the user either to the login page or the application's main page when that state changes in a significant manner.
 
 #### Container Components
 

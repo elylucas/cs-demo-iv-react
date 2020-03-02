@@ -11,7 +11,8 @@ const Home: React.FC = () => {
   const history = useHistory();
   const store = useStore();
 
-  const handleCategoryClick = (id: number) => history.push(`/tabs/home/edit-tea-category/${id}`);
+  // Prefer using the routerLink prop on IonItem vs programmatically using the history api
+  // const handleCategoryClick = (id: number) => history.push(`/tabs/home/edit-tea-category/${id}`);
 
   const handleLogout = () => store.dispatch<any>(logout());
 
@@ -28,7 +29,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <TeaCategories onCategoryClick={handleCategoryClick}></TeaCategories>
+        <TeaCategories />
       </IonContent>
     </IonPage>
   );
